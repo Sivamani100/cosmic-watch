@@ -1,13 +1,13 @@
-# 🌌 Cosmic Watch
+#  Cosmic Watch
 **Interstellar Asteroid Tracker & Risk Analyser**
 
 Cosmic Watch is a sophisticated, full-stack monitoring platform designed to provide real-time tracking, risk assessment, and 3D visualization of Near-Earth Objects (NEOs). Built for the IIT BHU Hackathon, it translates complex NASA trajectory data into intuitive, actionable insights for researchers and space enthusiasts alike.
 
 ---
 
-## 🚀 Features
+##  Features
 
-### 🛡️ Core Requirements
+###  Core Requirements
 - **Secure Authentication**: Robust user login and registration powered by Supabase.
 - **NASA NeoWs Integration**: Real-time fetching of live asteroid data from NASA's official APIs.
 - **Risk Analysis Engine**: Intelligent scoring system based on hazardous status, diameter, and miss distance.
@@ -15,7 +15,7 @@ Cosmic Watch is a sophisticated, full-stack monitoring platform designed to prov
 - **NEO Watchlist**: Personalized tracking system for researchers to monitor specific high-risk objects.
 - **Custom Alert Parameters**: Set individual proximity thresholds and research notes for every watched object.
 
-### 🌟 Bonus Features
+###  Bonus Features
 - **3D Interactive Visualization**: Immersive 3D scene using **React Three Fiber**.
   - **Accurate Orbital Scaling**: 1 scene unit = 1,000,000 km.
   - **Orbital Inclination**: Paths are rendered using real NASA inclination data.
@@ -24,7 +24,7 @@ Cosmic Watch is a sophisticated, full-stack monitoring platform designed to prov
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 - **Frontend**: React 18, TypeScript, Vite, Tailwind CSS.
 - **UI Components**: Shadcn UI, Framer Motion (Animations), Lucide React (Icons).
 - **Backend/Database**: Supabase (PostgreSQL, Auth, Realtime).
@@ -33,7 +33,7 @@ Cosmic Watch is a sophisticated, full-stack monitoring platform designed to prov
 
 ---
 
-## 🐳 Docker Deployment
+##  Docker Deployment
 
 The platform is fully containerized and easy to set up.
 
@@ -56,7 +56,7 @@ The platform is fully containerized and easy to set up.
 
 ---
 
-## 🧪 Postman Documentation
+##  Postman Documentation
 
 A fully documented Postman Collection is included in the root directory: `postman_collection.json`.
 
@@ -70,7 +70,7 @@ A fully documented Postman Collection is included in the root directory: `postma
 
 ---
 
-## 📄 Compliance & Documentation
+##  Compliance & Documentation
 - **AI-LOG.md**: Included in the root directory. Details all AI assistance used during development.
 - **Architecture**: Clear separation between the UI layer, data hooks, and service layer.
 - **Sustainability**: All asteroid data is cached in Supabase to respect NASA API rate limits.
