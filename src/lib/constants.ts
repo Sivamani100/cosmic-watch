@@ -1,7 +1,7 @@
 // NASA API Configuration
 export const NASA_API_BASE = 'https://api.nasa.gov';
 export const NASA_NEO_BASE = `${NASA_API_BASE}/neo/rest/v1`;
-export const NASA_API_KEY = 'mMFXLrNHGzhjvOAxeI4DSUfHyplgKMQ6Ehs8imLh';
+export const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY || 'mMFXLrNHGzhjvOAxeI4DSUfHyplgKMQ6Ehs8imLh';
 
 // Risk Level Thresholds
 export const RISK_THRESHOLDS = {
