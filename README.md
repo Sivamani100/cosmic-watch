@@ -76,4 +76,4 @@ A fully documented Postman Collection is included in the root directory: `postma
 - **Sustainability**: All asteroid data is cached in Supabase to respect NASA API rate limits.
 
 ---
-*Created by the Cosmic Watch Team for the IIT BHU Hackathon 2026.*
+*Created by the ARIKO Team for the IIT BHU Hackathon 2026.*
