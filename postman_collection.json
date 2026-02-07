@@ -1,0 +1,524 @@
+{
+  "info": {
+    "_postman_id": "cosmic-watch-api",
+    "name": "Cosmic Watch API",
+    "description": "# 🚀 Cosmic Watch API Collection\n\nThis collection provides a comprehensive testing suite for the **Cosmic Watch** Near-Earth Object monitoring platform. It covers NASA's NeoWs API and the Supabase backend infrastructure including Auth, Database, and Realtime endpoints.\n\n## 🛠️ Setup Instructions\n1.  **Environment Variables**: Set the `supabase_url`, `supabase_anon_key`, and `nasa_api_key` in the collection variables.\n2.  **Authentication**: Run the `Sign In` request first. It includes a test script that automatically captures the `access_token` and sets it as a collection variable for all subsequent requests.\n3.  **NASA API**: You can use `DEMO_KEY` for basic testing, but a personalized API key from [api.nasa.gov](https://api.nasa.gov) is recommended for higher rate limits.\n\n## 📂 Folders\n- **NASA API**: Testing core asteroid feed and specific object lookup.\n- **Authentication**: Managing user accounts (Sign Up, Sign In, Sign Out, Profile Info).\n- **Asteroids (Cache)**: Querying the synced local asteroid data.\n- **Watchlist**: Managing user-specific tracked objects.\n- **Community Hub**: Interacting with the global research forum.\n- **Profile Management**: Updating researcher avatars and usernames.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "supabase_url",
+      "value": "https://your-project.supabase.co",
+      "type": "string"
+    },
+    {
+      "key": "supabase_anon_key",
+      "value": "your-anon-key",
+      "type": "string"
+    },
+    {
+      "key": "nasa_api_key",
+      "value": "DEMO_KEY",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "test_user_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "NASA API",
+      "description": "Direct integration with NASA Near-Earth Object Web Service (NeoWs).",
+      "item": [
+        {
+          "name": "Get NEO Feed",
+          "description": "Fetch a list of asteroids based on their closest approach date to Earth.",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://api.nasa.gov/neo/rest/v1/feed?start_date=2024-01-01&end_date=2024-01-07&api_key={{nasa_api_key}}",
+              "protocol": "https",
+              "host": [
+                "api",
+                "nasa",
+                "gov"
+              ],
+              "path": [
+                "neo",
+                "rest",
+                "v1",
+                "feed"
+              ],
+              "query": [
+                {
+                  "key": "start_date",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2024-01-07"
+                },
+                {
+                  "key": "api_key",
+                  "value": "{{nasa_api_key}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get NEO Lookup",
+          "description": "Lookup a specific Near Earth Object by its NASA ID.",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://api.nasa.gov/neo/rest/v1/neo/3542519?api_key={{nasa_api_key}}",
+              "protocol": "https",
+              "host": [
+                "api",
+                "nasa",
+                "gov"
+              ],
+              "path": [
+                "neo",
+                "rest",
+                "v1",
+                "neo",
+                "3542519"
+              ],
+              "query": [
+                {
+                  "key": "api_key",
+                  "value": "{{nasa_api_key}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "description": "Endpoints managed by Supabase Auth (GoTrue).",
+      "item": [
+        {
+          "name": "Sign Up",
+          "description": "Register a new researcher account. Requires a strong password (8+ chars, number, special char).",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"researcher@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"data\": {\n    \"username\": \"astro_pioneer\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/auth/v1/signup",
+              "host": [
+                "{{supabase_url}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "signup"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sign In",
+          "description": "Authenticate an existing user. Retrieves a JWT token which is automatically saved to the `access_token` variable.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"researcher@example.com\",\n  \"password\": \"SecurePass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/auth/v1/token?grant_type=password",
+              "host": [
+                "{{supabase_url}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "token"
+              ],
+              "query": [
+                {
+                  "key": "grant_type",
+                  "value": "password"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Sign In Successful\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.access_token) {",
+                  "    pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+                  "    pm.collectionVariables.set(\"test_user_id\", jsonData.user.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get User Info",
+          "description": "Get data of the currently authenticated user session.",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{supabase_url}}/auth/v1/user",
+              "host": [
+                "{{supabase_url}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "user"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Asteroids (Synced Cache)",
+      "description": "Read-only access to the synced NASA data stored in Supabase.",
+      "item": [
+        {
+          "name": "List All Asteroids",
+          "description": "Fetch paginated cached asteroids ordered by risk score.",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/asteroids_cache?select=*&order=risk_score.desc&limit=20",
+              "host": [
+                "{{supabase_url}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "asteroids_cache"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "*"
+                },
+                {
+                  "key": "order",
+                  "value": "risk_score.desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hazardous Alert Filter",
+          "description": "Query only potentially hazardous objects.",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/asteroids_cache?select=*&is_potentially_hazardous=eq.true",
+              "host": [
+                "{{supabase_url}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "asteroids_cache"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "*"
+                },
+                {
+                  "key": "is_potentially_hazardous",
+                  "value": "eq.true"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Community Hub",
+      "description": "Interactions for the real-time global research chat.",
+      "item": [
+        {
+          "name": "Get Discussion Hub Messages",
+          "description": "Fetch latest messages from the community hub.",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/community_messages?select=*&order=created_at.desc&limit=50",
+              "host": [
+                "{{supabase_url}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "community_messages"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "*"
+                },
+                {
+                  "key": "order",
+                  "value": "created_at.desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Send Signal (Post Message)",
+          "description": "Broadcast a message to all researchers. Requires Authentication.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{test_user_id}}\",\n  \"username\": \"astro_pioneer\",\n  \"message\": \"I've detected significant orbital variance in NEO-3542519!\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/community_messages",
+              "host": [
+                "{{supabase_url}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "community_messages"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Retract Signal (Delete Message)",
+          "description": "Delete a message sent by the user. RLS policies ensure you can only delete your own messages.",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/community_messages?id=eq.YOUR_MESSAGE_UUID&user_id=eq.{{test_user_id}}",
+              "host": [
+                "{{supabase_url}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "community_messages"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "eq.YOUR_MESSAGE_UUID"
+                },
+                {
+                  "key": "user_id",
+                  "value": "eq.{{test_user_id}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Researcher Profiles",
+      "description": "Managing your public researcher identity.",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/profiles?id=eq.{{test_user_id}}&select=*",
+              "host": [
+                "{{supabase_url}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "profiles"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "eq.{{test_user_id}}"
+                },
+                {
+                  "key": "select",
+                  "value": "*"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "description": "Update your researcher username or avatar URL.",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"senior_researcher_v2\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/profiles?id=eq.{{test_user_id}}",
+              "host": [
+                "{{supabase_url}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "profiles"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "eq.{{test_user_id}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

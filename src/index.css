@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Cosmic Watch Design System - Neon-Dark Theme */
+
+@layer base {
+  :root {
+    /* Neon-Dark Palette */
+    /* Primary Background: #050505 */
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
+
+    /* Secondary Surface: #0F1115 */
+    --card: 220 17% 7%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 220 17% 7%;
+    --popover-foreground: 0 0% 100%;
+
+    /* Accent Primary: #4F46E5 (Indigo) */
+    --primary: 243 75% 59%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: #0F1115 */
+    --secondary: 220 17% 7%;
+    --secondary-foreground: 215 20% 65%;
+    /* Muted text */
+
+    /* Accent Glow: #818CF8 */
+    --muted: 220 17% 10%;
+    --muted-foreground: 215 16% 47%;
+    /* #94A3B8 matches guide Text Secondary */
+
+    --accent: 234 89% 74%;
+    /* Glow color */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Border: #1E293B */
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 243 75% 59%;
+
+    --radius: 1.5rem;
+    /* 24px */
+
+    /* Custom Colors */
+    --cosmic-purple: 243 75% 59%;
+    --cosmic-blue: 217 91% 60%;
+    --cosmic-pink: 330 81% 60%;
+
+    /* Risk Level Colors */
+    /* Risk Level Colors - Dark Variants */
+    --risk-low: 142 76% 25%;
+    /* Dark Green */
+    --risk-medium: 45 93% 35%;
+    /* Dark Yellow */
+    --risk-high: 0 84% 35%;
+    /* Dark Red */
+    --risk-critical: 0 100% 25%;
+    /* Deep Dark Red */
+
+    /* Space Backgrounds */
+    --space-darkest: 0 0% 2%;
+    --space-dark: 220 17% 7%;
+
+    /* Glow Effects */
+    --glow-primary: 0 0 20px rgba(79, 70, 229, 0.4);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+    font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    /* Pure Dark Background */
+    background-color: #000000;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  p,
+  span,
+  div {
+    letter-spacing: normal;
+  }
+}
+
+@layer components {
+
+  /* The "Glassmorphism" Card */
+  .card-neon {
+    background: rgba(15, 17, 21, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .card-neon:hover {
+    border: 1px solid rgba(79, 70, 229, 0.5);
+    /* Glow on hover */
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 0 15px rgba(79, 70, 229, 0.1);
+  }
+
+  /* Overwrite .bg-card-gradient to align with new design if needed, or redirect */
+  .bg-card-gradient {
+    @apply card-neon;
+  }
+
+  .bg-hero-gradient {
+    @apply bg-primary hover:brightness-110 hover:scale-[1.02] transition-all duration-300;
+    box-shadow: 0px 0px 20px rgba(79, 70, 229, 0.4);
+  }
+
+  /* Space Gradient Background */
+  .bg-space-gradient {
+    background: linear-gradient(180deg,
+        hsl(var(--space-darkest)) 0%,
+        hsl(var(--space-dark)) 50%,
+        hsl(var(--space-medium)) 100%);
+  }
+
+  /* Hero Gradient */
+  .bg-hero-gradient {
+    background: linear-gradient(135deg,
+        hsl(var(--cosmic-purple)) 0%,
+        hsl(var(--cosmic-blue)) 50%,
+        hsl(var(--cosmic-pink)) 100%);
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply backdrop-blur-lg bg-card/50 border border-border/50;
+  }
+
+  /* Glow effects */
+  .glow-purple {
+    box-shadow: var(--glow-purple);
+  }
+
+  .glow-blue {
+    box-shadow: var(--glow-blue);
+  }
+
+  .glow-pink {
+    box-shadow: var(--glow-pink);
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg,
+        hsl(var(--cosmic-purple)) 0%,
+        hsl(var(--cosmic-blue)) 50%,
+        hsl(var(--cosmic-pink)) 100%);
+  }
+
+  /* Risk badge variants */
+  .risk-low {
+    @apply bg-[hsl(var(--risk-low)_/_0.2)] text-[hsl(var(--risk-low))] border-[hsl(var(--risk-low)_/_0.5)];
+  }
+
+  .risk-medium {
+    @apply bg-[hsl(var(--risk-medium)_/_0.2)] text-[hsl(var(--risk-medium))] border-[hsl(var(--risk-medium)_/_0.5)];
+  }
+
+  .risk-high {
+    @apply bg-[hsl(var(--risk-high)_/_0.2)] text-[hsl(var(--risk-high))] border-[hsl(var(--risk-high)_/_0.5)];
+  }
+
+  .risk-critical {
+    @apply bg-[hsl(var(--risk-critical)_/_0.2)] text-[hsl(var(--risk-critical))] border-[hsl(var(--risk-critical)_/_0.5)];
+  }
+
+  /* Animated star background */
+  .stars {
+    @apply fixed inset-0 pointer-events-none overflow-hidden -z-10;
+  }
+
+  .stars::before {
+    content: '';
+    @apply absolute w-full h-full;
+    background-image:
+      radial-gradient(2px 2px at 20px 30px, white, transparent),
+      radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
+      radial-gradient(1px 1px at 90px 40px, white, transparent),
+      radial-gradient(2px 2px at 160px 120px, rgba(255, 255, 255, 0.9), transparent),
+      radial-gradient(1px 1px at 230px 80px, white, transparent),
+      radial-gradient(2px 2px at 300px 160px, rgba(255, 255, 255, 0.7), transparent),
+      radial-gradient(1px 1px at 370px 60px, white, transparent),
+      radial-gradient(2px 2px at 440px 200px, rgba(255, 255, 255, 0.8), transparent);
+    background-repeat: repeat;
+    background-size: 500px 300px;
+    animation: stars-move 100s linear infinite;
+  }
+
+  @keyframes stars-move {
+    from {
+      transform: translateY(0);
+    }
+
+    to {
+      transform: translateY(-300px);
+    }
+  }
+}
+
+@layer utilities {
+
+  /* Float animation */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  /* Pulse glow animation */
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      box-shadow: var(--glow-purple);
+    }
+
+    50% {
+      box-shadow: 0 0 50px hsl(239 84% 67% / 0.6);
+    }
+  }
+
+  /* Orbit animation */
+  .animate-orbit {
+    animation: orbit 20s linear infinite;
+  }
+
+  @keyframes orbit {
+    from {
+      transform: rotate(0deg) translateX(100px) rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg) translateX(100px) rotate(-360deg);
+    }
+  }
+
+  /* Spin slow animation */
+  .animate-spin-slow {
+    animation: spin 20s linear infinite;
+  }
+
+  /* Fade in up animation */
+  .animate-fade-in-up {
+    animation: fade-in-up 0.5s ease-out;
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Shimmer effect */
+  .shimmer {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        hsl(var(--cosmic-purple) / 0.1) 50%,
+        transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+
+    100% {
+      background-position: 200% 0;
+    }
+  }
+}
