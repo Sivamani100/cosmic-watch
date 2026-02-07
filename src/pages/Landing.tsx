@@ -321,7 +321,7 @@ export default function Landing() {
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <CosmicLogo className="h-6 w-6" />
-            <span className="font-bold">Cosmic Watch</span>
+            <span className="font-bold">Cosmic Watch Hub</span>
           </div>
           <p className="text-sm text-white/60">
             © 2026 Cosmic Watch. Powered by NASA NeoWs API.
