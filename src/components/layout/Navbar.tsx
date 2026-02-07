@@ -65,7 +65,7 @@ export function Navbar() {
               <Rocket className="h-8 w-8 text-primary" />
             </motion.div>
             <span className="text-xl font-bold text-gradient">
-              Cosmic Watch
+              Cosmic Watch Hub
             </span>
           </Link>
 

@@ -98,7 +98,7 @@ export default function Register() {
         >
           <Link to="/" className="flex items-center gap-2 mb-8 group w-fit">
             <CosmicLogo className="h-10 w-10 transition-transform group-hover:scale-110" />
-            <span className="text-xl font-bold text-gradient">Cosmic Watch</span>
+            <span className="text-xl font-bold text-gradient">Cosmic Watch Hub</span>
           </Link>
 
           <div className="mb-8">
@@ -175,9 +175,9 @@ export default function Register() {
                       initial={{ width: 0 }}
                       animate={{ width: `${strength}%` }}
                       className={`h-full ${strength <= 25 ? 'bg-red-500' :
-                          strength <= 50 ? 'bg-orange-500' :
-                            strength <= 75 ? 'bg-yellow-500' :
-                              'bg-green-500'
+                        strength <= 50 ? 'bg-orange-500' :
+                          strength <= 75 ? 'bg-yellow-500' :
+                            'bg-green-500'
                         }`}
                     />
                   </div>

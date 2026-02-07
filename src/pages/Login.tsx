@@ -74,7 +74,7 @@ export default function Login() {
         >
           <Link to="/" className="flex items-center gap-2 mb-8 group w-fit">
             <CosmicLogo className="h-10 w-10 transition-transform group-hover:scale-110" />
-            <span className="text-xl font-bold text-gradient">Cosmic Watch</span>
+            <span className="text-xl font-bold text-gradient">Cosmic Watch Hub</span>
           </Link>
 
           <div className="mb-8">
