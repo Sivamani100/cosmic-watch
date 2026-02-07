@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import toast from 'react-hot-toast';
+import { Google } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -23,7 +24,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, signInWithProvider } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -56,6 +57,17 @@ export default function Login() {
       } else {
         toast.error(message);
       }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      await signInWithProvider('google');
+    } catch (err: any) {
+      toast.error(err?.message || 'Failed to sign in with Google');
     } finally {
       setIsLoading(false);
     }
@@ -145,6 +157,25 @@ export default function Login() {
               )}
             </Button>
           </form>
+
+          <div className="mt-4">
+            <div className="relative py-4">
+              <div className="absolute left-0 right-0 top-1/2 border-t" />
+              <div className="relative text-center">
+                <span className="bg-background px-3 text-sm text-muted-foreground">or continue with</span>
+              </div>
+            </div>
+
+            <Button variant="outline" className="w-full flex items-center justify-center gap-3" onClick={handleGoogleSignIn}>
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.6 12.227c0-.725-.065-1.453-.196-2.14H12v4.053h5.392c-.233 1.26-.935 2.327-2 3.044v2.534h3.228c1.887-1.737 2.996-4.3 2.996-7.491z" fill="#4285F4"/>
+                <path d="M12 22c2.7 0 4.967-.9 6.622-2.45l-3.228-2.534c-.906.608-2.064.97-3.394.97-2.608 0-4.816-1.76-5.604-4.127H2.972v2.594C4.615 19.904 8.006 22 12 22z" fill="#34A853"/>
+                <path d="M6.396 13.859A6.993 6.993 0 0 1 6 12c0-.667.109-1.312.31-1.859V7.547H2.972A9.999 9.999 0 0 0 2 12c0 1.64.373 3.197 1.04 4.553l3.356-2.694z" fill="#FBBC05"/>
+                <path d="M12 6.5c1.47 0 2.79.5 3.832 1.48l2.872-2.872C16.956 3.548 14.69 2.6 12 2.6 8.006 2.6 4.615 4.696 2.972 7.86l3.334 2.59C7.184 8.26 9.392 6.5 12 6.5z" fill="#EA4335"/>
+              </svg>
+              Continue with Google
+            </Button>
+          </div>
 
           <div className="mt-8 text-center">
             <p className="text-muted-foreground">

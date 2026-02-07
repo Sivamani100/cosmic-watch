@@ -79,6 +79,23 @@ export function useAuth() {
     return data;
   };
 
+  const signInWithProvider = async (provider: 'google' | 'github' | 'twitter' | string) => {
+    try {
+      const redirectTo = typeof window !== 'undefined' ? window.location.origin : undefined;
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo,
+        },
+      });
+
+      if (error) throw error;
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  };
+
   const register = async (email: string, password: string, username: string) => {
     const redirectUrl = `${window.location.origin}/`;
 
@@ -129,6 +146,7 @@ export function useAuth() {
     loading: state.loading,
     isAuthenticated: !!state.user,
     login,
+    signInWithProvider,
     register,
     logout,
     updateProfile,
