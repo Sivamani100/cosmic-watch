@@ -21,8 +21,10 @@ export function useNeoStats() {
                 // https://api.nasa.gov/neo/rest/v1/stats?api_key=DEMO_KEY
                 // However, standard feed is safer if stats endpoint is restricted.
                 // Let's try stats endpoint first.
-                const response = await axios.get(`https://api.nasa.gov/neo/rest/v1/stats?api_key=${NASA_API_KEY}`);
-                setStats(response.data);
+                const res = await fetch(`https://api.nasa.gov/neo/rest/v1/stats?api_key=${NASA_API_KEY}`);
+                if (!res.ok) throw new Error(`NASA API error: ${res.status}`);
+                const data = await res.json();
+                setStats(data);
             } catch (err) {
                 console.error("Failed to fetch NASA stats, falling back to estimations", err);
                 // Fallback to approximate real numbers if API fails
@@ -32,6 +34,7 @@ export function useNeoStats() {
                     last_updated: new Date().toISOString(),
                     source: 'NASA JPL (Estimated)'
                 });
+                setError(String(err));
             } finally {
                 setLoading(false);
             }
